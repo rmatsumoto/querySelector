@@ -6,28 +6,28 @@ var cssquery = window.cssquery = function(s) {
   
     var el = "";
     var returnArray = [];
-    var IDArray = [];
     var i = 0;
 
     while(el != null) {
 
         if (i != 0) {
-            var ii = IDArray.length;
+            
             var notSelector = "";
 
-            for (var count = 0; count <  ii; count++) {
-                notSelector += (":not(#" + IDArray[count] + ")");
+            for (var count = 0; count <=  i; count++) {
+                notSelector += (":not([data-selected-" + (count + 1) + "='true'])");
             }
-
+            
             el = document.querySelector(s + notSelector);
+            
             if (el != null) {
-                IDArray.push(el.id);
+                el.setAttribute("data-selected-" + i, "true");
             }
         }
         else {
             el = document.querySelector(s);
             if (el != null) {
-                IDArray.push(el.id);
+                el.setAttribute("data-selected-1", "true");
             }
         }
 
@@ -37,6 +37,17 @@ var cssquery = window.cssquery = function(s) {
         
         i++;
     }
-
+    
+    returnArray.sort(function(a, b) {
+        
+        if (a.id < b.id) 
+            return -1;
+        
+        if (a.id > b.id ) 
+            return 1;
+        
+        return 0;
+    });
     return returnArray;    
 };
+
